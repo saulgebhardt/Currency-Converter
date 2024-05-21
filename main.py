@@ -2,18 +2,25 @@
 import requests
 from datetime import datetime
 from codes import codes
-import json
 
 def main():
     print("Please type a currency you want to convert from via the official 3 character code, "   
           "available here https://www.exchangerate-api.com/docs/supported-currencies")
     currency = input('--> ')
+    print('Loading', end='', flush=True)
+    currency = currency.upper()
     url = "https://api.exchangerate-api.com/v4/latest/" + currency
+    print('\r \r', end='', flush=True)
     response = requests.get(url)
     data = response.json()
-    print("Please select a value")
-    value = input('--> ')
-    original_value = int(value)
+    print("Please choose a value")
+    while True: 
+        value = input('--> ')
+        try:
+            original_value = int(value)
+            break
+        except ValueError:
+            print("This is not an integer. Please select a valid integer.")
     print("Select new currency")
     new_currency = input('--> ')
     human_readable_date = datetime.fromtimestamp((data['time_last_updated'])).strftime('%d-%m-%Y')
